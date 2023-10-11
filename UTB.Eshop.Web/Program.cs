@@ -1,7 +1,12 @@
+using UTB.Eshop.Application.Abstraction;
+using UTB.Eshop.Application.Implementation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IProductAppService, ProductAppDFService>();
 
 var app = builder.Build();
 
