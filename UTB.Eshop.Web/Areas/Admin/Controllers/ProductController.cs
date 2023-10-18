@@ -19,5 +19,31 @@ namespace UTB.Eshop.Web.Areas.Admin.Controllers
             IList<Product> products = _productAppService.Select();
             return View(products);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Product product)
+        {
+            _productAppService.Create(product);
+
+            return RedirectToAction(nameof(ProductController.Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            bool deleted = _productAppService.Delete(id);
+
+            if (deleted)
+            {
+                return RedirectToAction(nameof(ProductController.Index));
+            }
+            else
+                return NotFound();
+        }
     }
 }
