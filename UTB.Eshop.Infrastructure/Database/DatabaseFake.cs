@@ -10,33 +10,13 @@ namespace UTB.Eshop.Infrastructure.Database
     public class DatabaseFake
     {
         public static IList<Product> Products { get; set; }
+        public static IList<Carousel> Carousels { get; set; }
 
         static DatabaseFake()
         {
-            Products = new List<Product>();
-            Products.Add(new Product { 
-                Id = 1,
-                Name = "iPhone",
-                Description = "smartphone",
-                Price = 15000,
-                ImageSrc = ""
-            });
-            Products.Add(new Product
-            {
-                Id = 2,
-                Name = "iPhone 2",
-                Description = "smartphone",
-                Price = 15000,
-                ImageSrc = ""
-            });
-            Products.Add(new Product
-            {
-                Id = 3,
-                Name = "iPhone 3",
-                Description = "smartphone",
-                Price = 15000,
-                ImageSrc = ""
-            });
+            DatabaseInit dbInit = new DatabaseInit();
+            Products = dbInit.GetProducts();
+            Carousels = dbInit.GetCarousels();
         }
     }
 }
