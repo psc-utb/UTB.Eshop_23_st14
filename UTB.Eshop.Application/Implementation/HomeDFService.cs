@@ -9,7 +9,7 @@ using UTB.Eshop.Infrastructure.Database;
 
 namespace UTB.Eshop.Application.Implementation
 {
-    public class HomeService : IHomeService
+    public class HomeDFService : IHomeService
     {
         public CarouselProductViewModel GetIndexViewModel()
         {
