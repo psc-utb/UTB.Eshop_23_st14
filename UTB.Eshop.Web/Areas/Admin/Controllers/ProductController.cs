@@ -27,11 +27,18 @@ namespace UTB.Eshop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
-            _productAppService.Create(product);
+            if (ModelState.IsValid)
+            {
+                await _productAppService.Create(product);
 
-            return RedirectToAction(nameof(ProductController.Index));
+                return RedirectToAction(nameof(ProductController.Index));
+            }
+            else
+            {
+                return View(product);
+            }
         }
 
         public IActionResult Delete(int id)

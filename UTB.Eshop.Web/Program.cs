@@ -13,8 +13,8 @@ ServerVersion serverVersion = new MySqlServerVersion("8.0.34");
 builder.Services.AddDbContext<EshopDbContext>(optionsBuilder => optionsBuilder.UseMySql(connectionString, serverVersion));
 
 builder.Services.AddScoped<IFileUploadService, FileUploadService>(serviceProvider => new FileUploadService(serviceProvider.GetService<IWebHostEnvironment>().WebRootPath));
-builder.Services.AddScoped<IProductAppService, ProductAppDFService>();
-builder.Services.AddScoped<IHomeService, HomeDFService>();
+builder.Services.AddScoped<IProductAppService, ProductAppService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 var app = builder.Build();
 

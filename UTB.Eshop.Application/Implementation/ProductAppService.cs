@@ -9,35 +9,32 @@ using UTB.Eshop.Infrastructure.Database;
 
 namespace UTB.Eshop.Application.Implementation
 {
-    public class ProductAppDFService : IProductAppService
+    public class ProductAppService : IProductAppService
     {
         IFileUploadService _fileUploadService;
+        EshopDbContext _eshopDbContext;
 
-        public ProductAppDFService(IFileUploadService fileUploadService)
+        public ProductAppService(IFileUploadService fileUploadService, EshopDbContext eshopDbContext)
         {
             _fileUploadService = fileUploadService;
+            _eshopDbContext = eshopDbContext;
         }
 
         public IList<Product> Select()
         {
-            return DatabaseFake.Products;
+            return _eshopDbContext.Products.ToList();
         }
 
         public async Task Create(Product product)
         {
-            if(DatabaseFake.Products != null
-                && DatabaseFake.Products.Count > 0)
-            {
-                product.Id = DatabaseFake.Products.Last().Id + 1;
-            }
-            else
-                product.Id = 1;
-
             string imageSrc = await _fileUploadService.FileUploadAsync(product.Image, Path.Combine("img", "products"));
             product.ImageSrc = imageSrc;
 
-            if (DatabaseFake.Products != null)
-                DatabaseFake.Products.Add(product);
+            if (_eshopDbContext.Products != null)
+            {
+                _eshopDbContext.Products.Add(product);
+                _eshopDbContext.SaveChanges();
+            }
         }
 
         public bool Delete(int id)
@@ -45,11 +42,13 @@ namespace UTB.Eshop.Application.Implementation
             bool deleted = false;
 
             Product? product
-                = DatabaseFake.Products.FirstOrDefault(prod => prod.Id == id);
+                = _eshopDbContext.Products.FirstOrDefault(prod => prod.Id == id);
 
             if (product != null)
             {
-                deleted = DatabaseFake.Products.Remove(product);
+                _eshopDbContext.Products.Remove(product);
+                _eshopDbContext.SaveChanges();
+                deleted = true;
             }
             return deleted;
         }
